@@ -338,7 +338,7 @@ export default function Services() {
             alt=""
             className="w-full h-full object-cover" style={{ objectPosition: '50% 25%' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/80 to-slate-900/70" />
+          <div className="absolute inset-0 bg-emerald-900/10" />
         </div>
 
         <div className="relative max-w-[1400px] mx-auto px-6 lg:px-12 text-center">
