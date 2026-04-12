@@ -63,7 +63,7 @@ const services = [
 
 const clients = [
   'UNICEF', 'EA Games', 'Seagate', 'Visa', 'Capital One', 'Scale AI',
-  'Accenture', 'Good360', 'The Education Trust', 'EPRI', 'FarmLink'
+  'Accenture', 'Good360', 'The Education Trust', 'EPRI', 'FarmLink', 'Oracle', 'Arista Networks'
 ]
 
 export default function Services() {
@@ -223,13 +223,73 @@ export default function Services() {
         </div>
       </section>
 
+      {/* Past Projects */}
+      <section className="py-24">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <div className="text-center mb-16">
+            <span className="text-emerald-600 font-semibold uppercase tracking-wider text-sm">Sample Work</span>
+            <h2 className="mt-4 text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-slate-900">
+              Past Projects
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">UNICEF</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Created web scrapers to identify potential partner organizations for UNICEF by utilizing sentiment analysis on social media posts to target organizations with a higher propensity to join.
+              </p>
+            </TiltCard>
+            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">EA Games</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Developed a web scraper to capture game leak data, integrating it with an ETL pipeline into Snowflake. Enhanced classification accuracy using confusion matrices and initiated predictive analytics on sentiment and revenue trends.
+              </p>
+            </TiltCard>
+            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">Seagate</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Developed a PostgreSQL-integrated priority scoring framework for automating accounts payable and cost modeling. Built Tableau dashboards with drill-down analytics and streamlined ETL workflows using Metabase and Streamlit.
+              </p>
+            </TiltCard>
+            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">EPRI</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Built generative machine learning models including LSTM, GANs, and VAEs to synthesize ultrasonic A-scans for non-destructive testing.
+              </p>
+            </TiltCard>
+            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">The Education Trust</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Constructed an ETL Snowflake pipeline to automate collection and data. Generated multiple Tableau visualizations using piped data.
+              </p>
+            </TiltCard>
+            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">The Farmlink Project</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Conducted an ML-driven data analysis to segment donors. Identified key factors to increase donations from newsletters.
+              </p>
+            </TiltCard>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
-      <section className="py-20">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 text-center">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-[-0.02em] text-slate-900">
+      <section className="py-32 relative overflow-hidden">
+        {/* Background image */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/cta-background.webp"
+            alt=""
+            className="w-full h-full object-cover" style={{ objectPosition: '50% 25%' }}
+          />
+          <div className="absolute inset-0 bg-slate-900/70" />
+        </div>
+
+        <div className="relative max-w-[1400px] mx-auto px-6 lg:px-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-[-0.02em] text-white">
             Interested in working with us?
           </h2>
-          <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-slate-200 max-w-2xl mx-auto">
             We're always looking for new partners. Reach out to discuss how DataStory can help your organization.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
@@ -242,7 +302,7 @@ export default function Services() {
             </a>
             <Link
               to="/apply"
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-slate-100 text-slate-900 font-semibold rounded-full hover:bg-slate-200 transition-colors"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-colors backdrop-blur-sm"
             >
               Join our team
             </Link>

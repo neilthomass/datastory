@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 
-function DataAnimation() {
+function MouseParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const mouseRef = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -12,63 +13,102 @@ function DataAnimation() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
+    let width = 0
+    let height = 0
+
     const resize = () => {
-      canvas.width = canvas.offsetWidth * 2
-      canvas.height = canvas.offsetHeight * 2
+      width = canvas.offsetWidth
+      height = canvas.offsetHeight
+      canvas.width = width * 2
+      canvas.height = height * 2
       ctx.scale(2, 2)
     }
     resize()
     window.addEventListener('resize', resize)
 
-    const nodes: { x: number; y: number; vx: number; vy: number; radius: number }[] = []
-    const numNodes = 50
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect()
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      }
+    }
+    window.addEventListener('mousemove', handleMouseMove)
 
-    for (let i = 0; i < numNodes; i++) {
-      nodes.push({
-        x: Math.random() * canvas.offsetWidth,
-        y: Math.random() * canvas.offsetHeight,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        radius: Math.random() * 3 + 2,
+    interface Particle {
+      x: number
+      y: number
+      baseX: number
+      baseY: number
+      radius: number
+      color: string
+    }
+
+    const particles: Particle[] = []
+    const numParticles = 150
+    const colors = ['rgba(16, 185, 129, 0.4)', 'rgba(52, 211, 153, 0.3)', 'rgba(110, 231, 183, 0.25)']
+
+    for (let i = 0; i < numParticles; i++) {
+      const x = Math.random() * width
+      const y = Math.random() * height
+      particles.push({
+        x,
+        y,
+        baseX: x,
+        baseY: y,
+        radius: Math.random() * 4 + 2,
+        color: colors[Math.floor(Math.random() * colors.length)]
       })
     }
 
     let animationId: number
 
     const animate = () => {
-      ctx.fillStyle = '#f8fafc'
-      ctx.fillRect(0, 0, canvas.offsetWidth, canvas.offsetHeight)
+      ctx.fillStyle = '#ffffff'
+      ctx.fillRect(0, 0, width, height)
 
-      // Update and draw nodes
-      nodes.forEach((node, i) => {
-        node.x += node.vx
-        node.y += node.vy
+      const mouse = mouseRef.current
 
-        if (node.x < 0 || node.x > canvas.offsetWidth) node.vx *= -1
-        if (node.y < 0 || node.y > canvas.offsetHeight) node.vy *= -1
+      particles.forEach((particle) => {
+        const dx = mouse.x - particle.x
+        const dy = mouse.y - particle.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        const maxDist = 200
 
-        // Draw connections
-        nodes.forEach((other, j) => {
-          if (i >= j) return
-          const dx = other.x - node.x
-          const dy = other.y - node.y
-          const dist = Math.sqrt(dx * dx + dy * dy)
+        if (dist < maxDist) {
+          const force = (maxDist - dist) / maxDist
+          const angle = Math.atan2(dy, dx)
+          const moveX = Math.cos(angle) * force * 50
+          const moveY = Math.sin(angle) * force * 50
+          particle.x -= moveX * 0.05
+          particle.y -= moveY * 0.05
+        }
 
-          if (dist < 150) {
+        // Return to base position
+        particle.x += (particle.baseX - particle.x) * 0.05
+        particle.y += (particle.baseY - particle.y) * 0.05
+
+        // Draw particle
+        ctx.beginPath()
+        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2)
+        ctx.fillStyle = particle.color
+        ctx.fill()
+
+        // Draw connections to nearby particles
+        particles.forEach((other) => {
+          const ddx = other.x - particle.x
+          const ddy = other.y - particle.y
+          const distance = Math.sqrt(ddx * ddx + ddy * ddy)
+
+          if (distance < 100) {
             ctx.beginPath()
-            ctx.moveTo(node.x, node.y)
+            ctx.moveTo(particle.x, particle.y)
             ctx.lineTo(other.x, other.y)
-            ctx.strokeStyle = `rgba(16, 185, 129, ${0.3 * (1 - dist / 150)})`
-            ctx.lineWidth = 1
+            ctx.strokeStyle = `rgba(16, 185, 129, ${0.15 * (1 - distance / 100)})`
+            ctx.lineWidth = 0.5
             ctx.stroke()
           }
         })
-
-        // Draw node
-        ctx.beginPath()
-        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2)
-        ctx.fillStyle = 'rgba(16, 185, 129, 0.6)'
-        ctx.fill()
       })
 
       animationId = requestAnimationFrame(animate)
@@ -78,6 +118,7 @@ function DataAnimation() {
 
     return () => {
       window.removeEventListener('resize', resize)
+      window.removeEventListener('mousemove', handleMouseMove)
       cancelAnimationFrame(animationId)
     }
   }, [])
@@ -92,8 +133,8 @@ function DataAnimation() {
 
 export default function Apply() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-50">
-      <DataAnimation />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
+      <MouseParticles />
 
       <div className="relative z-10 text-center px-6">
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-200 rounded-full mb-8">

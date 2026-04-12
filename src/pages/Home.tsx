@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronRight, ExternalLink } from 'lucide-react'
 import SlidingEaseVerticalBars from '@/components/SlidingEaseVerticalBars'
-import { CompanyLogo } from '@/components/CompanyLogos'
 import gsap from 'gsap'
 
 const pillars = [
@@ -30,9 +29,11 @@ const pillars = [
 ]
 
 const alumniCompanies = [
-  'Google', 'Meta', 'Apple', 'Amazon', 'Microsoft', 'McKinsey', 'BCG', 'Bain',
-  'Goldman Sachs', 'BlackRock', 'Citadel', 'JPMorgan', 'Stripe', 'Airbnb',
-  'Netflix', 'Uber', 'Salesforce', 'Adobe', 'Visa', 'Capital One'
+  'Amazon', 'McKinsey & Company', 'Adobe', 'Walmart', 'Microsoft', 'BlackRock',
+  'Intel', 'Tesla', 'Meta', 'BCG', 'Coca-Cola', 'AT&T', 'Salesforce', 'PwC',
+  'Workday', 'Disney', 'Thermo Fisher Scientific', 'Scale AI', 'EY', 'Red Bull',
+  'Datadog', 'Visa', 'Rakuten', 'Atlassian', 'CrowdStrike', 'Coinbase',
+  'Jefferies', 'Chime', 'Accenture', 'Figma', 'Susquehanna International Group', 'SpaceX'
 ]
 
 export default function Home() {
@@ -42,8 +43,6 @@ export default function Home() {
   const headlineRef = useRef<HTMLHeadingElement>(null)
   const subheadRef = useRef<HTMLParagraphElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
-
-  const currentPillar = pillars.find(p => p.id === activePillar)!
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -163,55 +162,49 @@ export default function Home() {
 
           {/* Pillar Content */}
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div
-              key={currentPillar.id}
-              className="animate-fade-in"
-            >
-              <div className="text-sm font-semibold text-emerald-600 uppercase tracking-wider mb-2">
-                {currentPillar.subtitle}
-              </div>
-              <h3 className="text-4xl font-semibold text-slate-900 mb-6">
-                {currentPillar.title}
-              </h3>
-              <p className="text-xl text-slate-600 leading-relaxed mb-8">
-                {currentPillar.description}
-              </p>
-              <Link
-                to="/services"
-                className="group inline-flex items-center gap-2 text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
-              >
-                Learn more about {currentPillar.title.toLowerCase()}
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
+            <div className="relative min-h-[280px]">
+              {pillars.map((pillar) => (
+                <div
+                  key={pillar.id}
+                  className={`transition-all duration-500 ease-out ${
+                    activePillar === pillar.id
+                      ? 'opacity-100 translate-y-0 relative'
+                      : 'opacity-0 translate-y-4 absolute inset-0 pointer-events-none'
+                  }`}
+                >
+                  <div className="text-sm font-semibold text-emerald-600 uppercase tracking-wider mb-2">
+                    {pillar.subtitle}
+                  </div>
+                  <h3 className="text-4xl font-semibold text-slate-900 mb-6">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-xl text-slate-600 leading-relaxed mb-8">
+                    {pillar.description}
+                  </p>
+                  <Link
+                    to="/services"
+                    className="group inline-flex items-center gap-2 text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
+                  >
+                    Learn more about {pillar.title.toLowerCase()}
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              ))}
             </div>
 
-            <div
-              key={`img-${currentPillar.id}`}
-              className="rounded-2xl overflow-hidden shadow-lg animate-fade-in"
-            >
-              <img
-                src={currentPillar.image}
-                alt={`DataStory ${currentPillar.title.toLowerCase()}`}
-                className="w-full h-auto object-cover"
-              />
+            <div className="relative rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
+              {pillars.map((pillar) => (
+                <img
+                  key={pillar.id}
+                  src={pillar.image}
+                  alt={`DataStory ${pillar.title.toLowerCase()}`}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-out ${
+                    activePillar === pillar.id ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              ))}
             </div>
           </div>
-
-          <style>{`
-            @keyframes fade-in {
-              from {
-                opacity: 0;
-                transform: translateY(10px);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-            .animate-fade-in {
-              animation: fade-in 0.4s ease-out forwards;
-            }
-          `}</style>
         </div>
       </section>
 
@@ -236,13 +229,15 @@ export default function Home() {
 
           {/* Row 1 - scrolling left */}
           <div className="flex animate-scroll-left">
-            {[...alumniCompanies.slice(0, 10), ...alumniCompanies.slice(0, 10)].map((company, index) => (
+            {[...alumniCompanies.slice(0, 16), ...alumniCompanies.slice(0, 16)].map((company, index) => (
               <div
                 key={`row1-${company}-${index}`}
                 className="flex-shrink-0 mx-3"
               >
                 <div className="px-6 py-4 bg-white rounded-lg border border-slate-200 shadow-sm flex items-center justify-center min-w-[120px]">
-                  <CompanyLogo name={company} />
+                  <span className="text-sm font-semibold text-slate-700 whitespace-nowrap">
+                    {company}
+                  </span>
                 </div>
               </div>
             ))}
@@ -250,13 +245,15 @@ export default function Home() {
 
           {/* Row 2 - scrolling right */}
           <div className="flex animate-scroll-right">
-            {[...alumniCompanies.slice(10), ...alumniCompanies.slice(10)].map((company, index) => (
+            {[...alumniCompanies.slice(16), ...alumniCompanies.slice(16)].map((company, index) => (
               <div
                 key={`row2-${company}-${index}`}
                 className="flex-shrink-0 mx-3"
               >
                 <div className="px-6 py-4 bg-white rounded-lg border border-slate-200 shadow-sm flex items-center justify-center min-w-[120px]">
-                  <CompanyLogo name={company} />
+                  <span className="text-sm font-semibold text-slate-700 whitespace-nowrap">
+                    {company}
+                  </span>
                 </div>
               </div>
             ))}
