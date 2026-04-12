@@ -330,7 +330,7 @@ export default function Services() {
       </section>
 
       {/* CTA */}
-      <section className="animate-section py-32 relative overflow-hidden">
+      <section className="py-32 relative overflow-hidden">
         {/* Background image */}
         <div className="absolute inset-0">
           <img
