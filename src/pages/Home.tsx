@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronRight, ExternalLink } from 'lucide-react'
 import SlidingEaseVerticalBars from '@/components/SlidingEaseVerticalBars'
+import { CompanyLogo } from '@/components/CompanyLogos'
 import gsap from 'gsap'
 
 const pillars = [
@@ -10,30 +11,21 @@ const pillars = [
     title: 'Projects',
     subtitle: 'Meaningful professional work',
     description: 'Each semester, we tackle a new slate of client projects, providing compelling research insights and actionable recommendations. Our goal is producing meaningful results within our client organizations and broader society.',
-    stats: [
-      { value: '50+', label: 'Projects Completed' },
-      { value: '30+', label: 'Partner Companies' },
-    ],
+    image: '/images/dstory-084.webp',
   },
   {
     id: 'community',
     title: 'Community',
     subtitle: 'A close-knit family',
     description: 'We prioritize helping our members create unforgettable memories throughout their undergraduate experience. From weekly socials to semester retreats, we foster a close-knit community where lasting friendships thrive.',
-    stats: [
-      { value: '100+', label: 'Active Members' },
-      { value: '500+', label: 'Alumni Network' },
-    ],
+    image: '/images/dstory-153.webp',
   },
   {
     id: 'growth',
     title: 'Growth',
     subtitle: 'Career guidance',
     description: 'We provide our members with mentorship from alumni and industry professionals, enabling them to acquire invaluable experience. Our Junior Consultant Program, technical workshops, and case competitions prepare you for top careers.',
-    stats: [
-      { value: '95%', label: 'Job Placement' },
-      { value: '5+', label: 'Competition Wins' },
-    ],
+    image: '/images/dstory-107.webp',
   },
 ]
 
@@ -95,9 +87,9 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="max-w-xl">
               <h1 ref={headlineRef} className="text-[clamp(2.5rem,6vw,4.5rem)] font-semibold leading-[1.05] tracking-[-0.03em] text-slate-900">
-                Providing Innovative
+                Where data meets
                 <br />
-                <span className="text-emerald-600">Data Solutions</span>
+                <span className="text-emerald-600">community</span>
               </h1>
 
               <p ref={subheadRef} className="mt-8 text-xl md:text-2xl text-slate-600 leading-relaxed">
@@ -124,7 +116,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="hidden lg:block">
+            <div className="hidden lg:block lg:scale-110 lg:translate-x-8">
               <div className="rounded-3xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
                 <img
                   src="/images/club-pic-2025.webp"
@@ -137,26 +129,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* What We Do Section */}
-      <section className="py-24 bg-slate-50">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="text-center">
-            <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-slate-900">
-              What We Do
-            </h2>
-            <p className="mt-6 text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              Since 2005, we have collaborated with a wide variety of companies, from startups and nonprofits to industry leaders and large-scale corporations.
-            </p>
-            <a
-              href="mailto:datastory.president@gmail.com"
-              className="mt-8 inline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors"
-            >
-              Get in touch
-              <ArrowRight className="w-5 h-5" />
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* Interactive Pillars Section */}
       <section className="py-32">
@@ -191,7 +163,10 @@ export default function Home() {
 
           {/* Pillar Content */}
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
+            <div
+              key={currentPillar.id}
+              className="animate-fade-in"
+            >
               <div className="text-sm font-semibold text-emerald-600 uppercase tracking-wider mb-2">
                 {currentPillar.subtitle}
               </div>
@@ -202,7 +177,7 @@ export default function Home() {
                 {currentPillar.description}
               </p>
               <Link
-                to="/apply"
+                to="/services"
                 className="group inline-flex items-center gap-2 text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
               >
                 Learn more about {currentPillar.title.toLowerCase()}
@@ -210,14 +185,33 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="rounded-2xl overflow-hidden shadow-lg">
+            <div
+              key={`img-${currentPillar.id}`}
+              className="rounded-2xl overflow-hidden shadow-lg animate-fade-in"
+            >
               <img
-                src="/images/dstory-084.webp"
-                alt="DataStory members"
+                src={currentPillar.image}
+                alt={`DataStory ${currentPillar.title.toLowerCase()}`}
                 className="w-full h-auto object-cover"
               />
             </div>
           </div>
+
+          <style>{`
+            @keyframes fade-in {
+              from {
+                opacity: 0;
+                transform: translateY(10px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+            .animate-fade-in {
+              animation: fade-in 0.4s ease-out forwards;
+            }
+          `}</style>
         </div>
       </section>
 
@@ -247,10 +241,8 @@ export default function Home() {
                 key={`row1-${company}-${index}`}
                 className="flex-shrink-0 mx-3"
               >
-                <div className="px-6 py-3 bg-white rounded-lg border border-slate-200 shadow-sm">
-                  <span className="text-base font-semibold text-slate-600 whitespace-nowrap tracking-tight">
-                    {company}
-                  </span>
+                <div className="px-6 py-4 bg-white rounded-lg border border-slate-200 shadow-sm flex items-center justify-center min-w-[120px]">
+                  <CompanyLogo name={company} />
                 </div>
               </div>
             ))}
@@ -263,10 +255,8 @@ export default function Home() {
                 key={`row2-${company}-${index}`}
                 className="flex-shrink-0 mx-3"
               >
-                <div className="px-6 py-3 bg-white rounded-lg border border-slate-200 shadow-sm">
-                  <span className="text-base font-semibold text-slate-600 whitespace-nowrap tracking-tight">
-                    {company}
-                  </span>
+                <div className="px-6 py-4 bg-white rounded-lg border border-slate-200 shadow-sm flex items-center justify-center min-w-[120px]">
+                  <CompanyLogo name={company} />
                 </div>
               </div>
             ))}

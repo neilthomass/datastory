@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 
-const navLinks = [
+type NavLink = { to: string; label: string } | { href: string; label: string }
+
+const navLinks: NavLink[] = [
   { to: '/', label: 'Home' },
   { to: '/services', label: 'Services' },
+  { to: '/team', label: 'Team' },
+  { href: 'mailto:datastory.president@gmail.com', label: 'Contact' },
   { to: '/apply', label: 'Apply' },
 ]
 
@@ -43,24 +47,28 @@ export default function Layout() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-10">
               {navLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className={`text-[15px] font-medium transition-colors ${
-                    location.pathname === link.to
-                      ? 'text-emerald-600'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  {link.label}
-                </Link>
+                'to' in link ? (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    className={`text-[15px] font-medium transition-colors ${
+                      location.pathname === link.to
+                        ? 'text-emerald-600'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="text-[15px] font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                )
               ))}
-              <a
-                href="mailto:datastory.president@gmail.com"
-                className="text-[15px] font-medium text-slate-600 hover:text-slate-900 transition-colors"
-              >
-                Contact
-              </a>
             </div>
 
             {/* Mobile Menu Button */}
@@ -86,22 +94,26 @@ export default function Layout() {
         >
           <div className="px-6 py-6 space-y-4">
             {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`block text-lg font-medium ${
-                  location.pathname === link.to ? 'text-emerald-600' : 'text-slate-900'
-                }`}
-              >
-                {link.label}
-              </Link>
+              'to' in link ? (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`block text-lg font-medium ${
+                    location.pathname === link.to ? 'text-emerald-600' : 'text-slate-900'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="block text-lg font-medium text-slate-900"
+                >
+                  {link.label}
+                </a>
+              )
             ))}
-            <a
-              href="mailto:datastory.president@gmail.com"
-              className="block text-lg font-medium text-slate-900"
-            >
-              Contact
-            </a>
           </div>
         </div>
       </header>
@@ -111,10 +123,11 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      {/* Footer */}
+      {/* Footer - hidden on team page */}
+      {location.pathname !== '/team' && (
       <footer className="bg-slate-50 border-t border-slate-200">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 lg:gap-16">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
             {/* Brand */}
             <div className="col-span-2 md:col-span-1">
               <div className="text-2xl font-semibold tracking-[-0.02em] text-slate-900 mb-4">DataStory</div>
@@ -128,10 +141,16 @@ export default function Layout() {
               <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-4">Navigate</h4>
               <ul className="space-y-3">
                 {navLinks.map((link) => (
-                  <li key={link.to}>
-                    <Link to={link.to} className="text-sm text-slate-600 hover:text-emerald-600 transition-colors">
-                      {link.label}
-                    </Link>
+                  <li key={'to' in link ? link.to : link.href}>
+                    {'to' in link ? (
+                      <Link to={link.to} className="text-sm text-slate-600 hover:text-emerald-600 transition-colors">
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a href={link.href} className="text-sm text-slate-600 hover:text-emerald-600 transition-colors">
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -165,16 +184,15 @@ export default function Layout() {
               <p className="text-sm text-slate-600 leading-relaxed">
                 We are a student group acting independently of the University of California.
               </p>
+              <p className="text-sm text-slate-500 mt-3">
+                Designed by <a href="https://linkedin.com/in/neiltthomas" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 transition-colors">Neil Thomas</a>
+              </p>
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-slate-200">
-            <p className="text-sm text-slate-500">
-              © {new Date().getFullYear()} DataStory at Berkeley
-            </p>
-          </div>
         </div>
       </footer>
+      )}
     </div>
   )
 }
