@@ -1,7 +1,12 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
+import { useEffect, useRef } from 'react'
 import DelicateAsciiDots from '@/components/DelicateAsciiDots'
 import TiltCard from '@/components/TiltCard'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const services = [
   {
@@ -67,17 +72,68 @@ const clients = [
 ]
 
 export default function Services() {
+  const heroRef = useRef<HTMLDivElement>(null)
+  const sectionsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hero animations
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+
+      gsap.set('.hero-title, .hero-desc', { opacity: 0, y: 50 })
+
+      tl.to('.hero-title', { opacity: 1, y: 0, duration: 0.8, delay: 0.2 })
+        .to('.hero-desc', { opacity: 1, y: 0, duration: 0.7 }, '-=0.4')
+
+      // Scroll-triggered animations for sections
+      gsap.utils.toArray('.animate-section').forEach((section) => {
+        gsap.set(section as Element, { opacity: 0, y: 60 })
+        gsap.to(section as Element, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: section as Element,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        })
+      })
+
+      // Staggered card animations
+      gsap.utils.toArray('.animate-card-group').forEach((group) => {
+        const cards = (group as Element).querySelectorAll('.animate-card')
+        gsap.set(cards, { opacity: 0, y: 40 })
+        gsap.to(cards, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: group as Element,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+          }
+        })
+      })
+    }, sectionsRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <>
+    <div ref={sectionsRef}>
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 min-h-[47vh] flex items-center overflow-hidden" style={{ isolation: 'isolate' }}>
+      <section ref={heroRef} className="relative pt-32 pb-20 min-h-[47vh] flex items-center overflow-hidden" style={{ isolation: 'isolate' }}>
         <DelicateAsciiDots />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12 w-full">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-semibold leading-[1.1] tracking-[-0.03em] text-slate-900">
+            <h1 className="hero-title text-5xl md:text-6xl font-semibold leading-[1.1] tracking-[-0.03em] text-slate-900">
               Our Services
             </h1>
-            <p className="mt-6 text-xl text-slate-600 leading-relaxed">
+            <p className="hero-desc mt-6 text-xl text-slate-600 leading-relaxed">
               Since 2005, we have collaborated with a wide variety of companies, from startups and nonprofits to industry leaders and large-scale corporations. Each semester, we tackle a new slate of client projects, providing compelling research insights and actionable recommendations.
             </p>
           </div>
@@ -87,7 +143,7 @@ export default function Services() {
       {/* Berkeley's Brightest */}
       <section className="py-24 bg-slate-50">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="animate-section grid lg:grid-cols-2 gap-16 items-center">
             <div className="rounded-2xl overflow-hidden shadow-xl">
               <img
                 src="/images/dstory-123.webp"
@@ -115,7 +171,7 @@ export default function Services() {
       {/* Project Structure */}
       <section className="py-24">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="animate-section grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <span className="text-emerald-600 font-semibold uppercase tracking-wider text-sm">How We Work</span>
               <h2 className="mt-4 text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-slate-900">
@@ -171,17 +227,17 @@ export default function Services() {
       {/* Services Grid */}
       <section className="py-20 bg-slate-50">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="text-center mb-16">
+          <div className="animate-section text-center mb-16">
             <span className="text-emerald-600 font-semibold uppercase tracking-wider text-sm">What We Offer</span>
             <h2 className="mt-4 text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-slate-900">
               Our Services
             </h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="animate-card-group grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service) => (
               <TiltCard
                 key={service.title}
-                className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-shadow"
+                className="animate-card bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-shadow"
               >
                 <div className="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center mb-6 text-emerald-600">
                   {service.icon}
@@ -201,7 +257,7 @@ export default function Services() {
       {/* Past Clients */}
       <section className="py-20 bg-slate-50">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="text-center mb-12">
+          <div className="animate-section text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-[-0.02em] text-slate-900">
               Our Clients
             </h2>
@@ -210,11 +266,11 @@ export default function Services() {
             </p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="animate-card-group flex flex-wrap justify-center gap-4">
             {clients.map((client) => (
               <div
                 key={client}
-                className="px-6 py-3 bg-slate-100 rounded-full text-slate-700 font-medium"
+                className="animate-card px-6 py-3 bg-slate-100 rounded-full text-slate-700 font-medium"
               >
                 {client}
               </div>
@@ -226,44 +282,44 @@ export default function Services() {
       {/* Past Projects */}
       <section className="py-24">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="text-center mb-16">
+          <div className="animate-section text-center mb-16">
             <span className="text-emerald-600 font-semibold uppercase tracking-wider text-sm">Sample Work</span>
             <h2 className="mt-4 text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-slate-900">
               Past Projects
             </h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+          <div className="animate-card-group grid md:grid-cols-3 gap-8">
+            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">UNICEF</h3>
               <p className="text-slate-600 leading-relaxed">
                 Created web scrapers to identify potential partner organizations for UNICEF by utilizing sentiment analysis on social media posts to target organizations with a higher propensity to join.
               </p>
             </TiltCard>
-            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">EA Games</h3>
               <p className="text-slate-600 leading-relaxed">
                 Developed a web scraper to capture game leak data, integrating it with an ETL pipeline into Snowflake. Enhanced classification accuracy using confusion matrices and initiated predictive analytics on sentiment and revenue trends.
               </p>
             </TiltCard>
-            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">Seagate</h3>
               <p className="text-slate-600 leading-relaxed">
                 Developed a PostgreSQL-integrated priority scoring framework for automating accounts payable and cost modeling. Built Tableau dashboards with drill-down analytics and streamlined ETL workflows using Metabase and Streamlit.
               </p>
             </TiltCard>
-            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">EPRI</h3>
               <p className="text-slate-600 leading-relaxed">
                 Built generative machine learning models including LSTM, GANs, and VAEs to synthesize ultrasonic A-scans for non-destructive testing.
               </p>
             </TiltCard>
-            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">The Education Trust</h3>
               <p className="text-slate-600 leading-relaxed">
                 Constructed an ETL Snowflake pipeline to automate collection and data. Generated multiple Tableau visualizations using piped data.
               </p>
             </TiltCard>
-            <TiltCard className="bg-slate-50 p-8 rounded-2xl">
+            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">The Farmlink Project</h3>
               <p className="text-slate-600 leading-relaxed">
                 Conducted an ML-driven data analysis to segment donors. Identified key factors to increase donations from newsletters.
@@ -274,7 +330,7 @@ export default function Services() {
       </section>
 
       {/* CTA */}
-      <section className="py-32 relative overflow-hidden">
+      <section className="animate-section py-32 relative overflow-hidden">
         {/* Background image */}
         <div className="absolute inset-0">
           <img
@@ -282,7 +338,7 @@ export default function Services() {
             alt=""
             className="w-full h-full object-cover" style={{ objectPosition: '50% 25%' }}
           />
-          <div className="absolute inset-0 bg-slate-900/70" />
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/80 to-slate-900/70" />
         </div>
 
         <div className="relative max-w-[1400px] mx-auto px-6 lg:px-12 text-center">
@@ -309,6 +365,6 @@ export default function Services() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }

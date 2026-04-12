@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronRight, ExternalLink } from 'lucide-react'
 import SlidingEaseVerticalBars from '@/components/SlidingEaseVerticalBars'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const pillars = [
   {
@@ -43,6 +46,7 @@ export default function Home() {
   const headlineRef = useRef<HTMLHeadingElement>(null)
   const subheadRef = useRef<HTMLParagraphElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
+  const pageRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -71,13 +75,29 @@ export default function Home() {
         y: 0,
         duration: 0.7,
       }, '-=0.4')
-    }, heroRef)
+
+      // Scroll-triggered animations for sections
+      gsap.utils.toArray('.animate-on-scroll').forEach((section) => {
+        gsap.set(section as Element, { opacity: 0, y: 50 })
+        gsap.to(section as Element, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: section as Element,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        })
+      })
+    }, pageRef)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <>
+    <div ref={pageRef}>
       {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
         <SlidingEaseVerticalBars />
@@ -132,7 +152,7 @@ export default function Home() {
       {/* Interactive Pillars Section */}
       <section className="py-32">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="text-center mb-16">
+          <div className="animate-on-scroll text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-slate-900">
               More Than Consulting
             </h2>
@@ -142,7 +162,7 @@ export default function Home() {
           </div>
 
           {/* Pillar Tabs */}
-          <div className="flex justify-center mb-12">
+          <div className="animate-on-scroll flex justify-center mb-12">
             <div className="inline-flex bg-slate-100 rounded-full p-1">
               {pillars.map((pillar) => (
                 <button
@@ -161,7 +181,7 @@ export default function Home() {
           </div>
 
           {/* Pillar Content */}
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="animate-on-scroll grid lg:grid-cols-2 gap-12 items-center">
             <div className="relative min-h-[280px]">
               {pillars.map((pillar) => (
                 <div
@@ -211,7 +231,7 @@ export default function Home() {
       {/* Alumni Companies Marquee */}
       <section className="py-24 bg-slate-50 overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 mb-16">
-          <div className="text-center">
+          <div className="animate-on-scroll text-center">
             <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-slate-900">
               Where our alumni work
             </h2>
@@ -285,7 +305,7 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-32">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="animate-on-scroll grid lg:grid-cols-2 gap-12 items-center">
             <div className="rounded-2xl overflow-hidden shadow-xl">
               <img
                 src="/images/dstory-256.webp"
@@ -322,6 +342,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Linkedin, Coffee } from 'lucide-react'
 import * as d3 from 'd3-force'
+import gsap from 'gsap'
 
 // Obsidian-style animations
 const styles = `
@@ -196,7 +197,25 @@ export default function Team() {
   const mouseRef = useRef({ x: 0, y: 0 })
   const hoveredNodeRef = useRef<Node | null>(null)
   const selectedNodeRef = useRef<Node | null>(null)
+  const infoRef = useRef<HTMLDivElement>(null)
+  const legendRef = useRef<HTMLDivElement>(null)
 
+  // GSAP intro animation for title and legend
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+
+      gsap.set(['.team-title', '.team-desc', '.team-hint'], { opacity: 0, y: 30 })
+      gsap.set(legendRef.current, { opacity: 0, x: 20 })
+
+      tl.to('.team-title', { opacity: 1, y: 0, duration: 0.8, delay: 0.3 })
+        .to('.team-desc', { opacity: 1, y: 0, duration: 0.7 }, '-=0.4')
+        .to('.team-hint', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+        .to(legendRef.current, { opacity: 1, x: 0, duration: 0.6 }, '-=0.4')
+    }, infoRef)
+
+    return () => ctx.revert()
+  }, [])
 
   // Initialize nodes and simulation
   useEffect(() => {
@@ -457,7 +476,7 @@ export default function Team() {
       </div>
 
       {/* Bottom left corner - Title/Person details, Description, and Legend */}
-      <div className="absolute bottom-8 left-8 text-left max-w-md">
+      <div ref={infoRef} className="absolute bottom-8 left-8 text-left max-w-md">
         {selectedNode ? (
           // Person details when a node is selected
           <div key={selectedNode.id} className="pt-8">
@@ -515,13 +534,13 @@ export default function Team() {
         ) : (
           // Default team view
           <>
-            <h1 className="text-5xl md:text-6xl font-semibold tracking-[-0.03em] text-slate-900">
+            <h1 className="team-title text-5xl md:text-6xl font-semibold tracking-[-0.03em] text-slate-900">
               Our Team
             </h1>
-            <p className="mt-3 mb-5 text-lg text-slate-500 max-w-lg">
+            <p className="team-desc mt-3 mb-5 text-lg text-slate-500 max-w-lg">
               Meet the talented individuals who drive DataStory forward. Our team combines diverse backgrounds in data science, business, and technology to deliver exceptional results.
             </p>
-            <p className="text-slate-400 text-xs mt-4">
+            <p className="team-hint text-slate-400 text-xs mt-4">
               Drag nodes to rearrange. Click for details.
             </p>
           </>
@@ -529,7 +548,7 @@ export default function Team() {
       </div>
 
       {/* Legend - Bottom right corner */}
-      <div className="absolute bottom-8 right-8">
+      <div ref={legendRef} className="absolute bottom-8 right-8">
         <div className="flex flex-col gap-2">
           {[
             { label: 'Executive', color: '#10b981' },
