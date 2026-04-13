@@ -17,7 +17,6 @@ export default function Layout() {
 
   useEffect(() => {
     setMobileMenuOpen(false)
-    window.scrollTo(0, 0)
   }, [location])
 
   useEffect(() => {

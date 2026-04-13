@@ -19,11 +19,5 @@
     }
   },
   "include": ["src"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "app",
-    "src/components/theme-provider.tsx",
-    "src/components/ui/sonner.tsx"
-  ]
+  "exclude": ["node_modules", "dist"]
 }

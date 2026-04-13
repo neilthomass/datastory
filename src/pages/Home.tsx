@@ -77,6 +77,8 @@ const alumniCompanies = [
 
 export default function Home() {
   const [activePillar, setActivePillar] = useState('projects')
+  const [marqueeInView, setMarqueeInView] = useState(false)
+  const marqueeRef = useRef<HTMLDivElement>(null)
 
   const heroRef = useRef<HTMLDivElement>(null)
   const headlineRef = useRef<HTMLHeadingElement>(null)
@@ -132,6 +134,24 @@ export default function Home() {
     return () => ctx.revert()
   }, [])
 
+  // Intersection Observer to start marquee when in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setMarqueeInView(true)
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (marqueeRef.current) {
+      observer.observe(marqueeRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div ref={pageRef}>
       {/* Hero Section */}
@@ -174,7 +194,7 @@ export default function Home() {
             <div className="hidden lg:block lg:scale-110 lg:translate-x-8">
               <div className="rounded-3xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
                 <img
-                  src="/images/club-pic-2025.webp"
+                  src="/images/dstory-171.webp"
                   alt="DataStory club members 2025"
                   className="w-full h-auto object-cover"
                 />
@@ -280,13 +300,13 @@ export default function Home() {
         </div>
 
         {/* Two-row marquee */}
-        <div className="relative space-y-12">
+        <div ref={marqueeRef} className="relative space-y-12">
           {/* Gradient masks */}
           <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
           {/* Row 1 - scrolling left */}
-          <div className="flex animate-marquee-left items-center w-max">
+          <div className={`flex items-center w-max ${marqueeInView ? 'animate-marquee-left' : ''}`}>
             {[...alumniCompanies, ...alumniCompanies].map((company, index) => (
               <div
                 key={`row1-${company}-${index}`}
@@ -308,7 +328,7 @@ export default function Home() {
           </div>
 
           {/* Row 2 - scrolling right */}
-          <div className="flex animate-marquee-right items-center w-max">
+          <div className={`flex items-center w-max ${marqueeInView ? 'animate-marquee-right' : ''}`}>
             {[...[...alumniCompanies].reverse(), ...[...alumniCompanies].reverse()].map((company, index) => (
               <div
                 key={`row2-${company}-${index}`}
