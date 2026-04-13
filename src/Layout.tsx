@@ -8,7 +8,6 @@ const navLinks: NavLink[] = [
   { to: '/services', label: 'Services' },
   { to: '/team', label: 'Team' },
   { href: 'mailto:datastory.president@gmail.com', label: 'Contact' },
-  { to: '/apply', label: 'Apply' },
 ]
 
 export default function Layout() {
@@ -21,40 +20,133 @@ export default function Layout() {
   }, [location])
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20)
+    const handleScroll = () => setScrolled(window.scrollY > 50)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   return (
     <div className="min-h-screen bg-white font-sans antialiased">
-      {/* Navigation */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm' : 'bg-transparent'
-        }`}
-      >
-        <nav className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
+      {/* Floating Pill Navigation - Launchpad style */}
+      <nav className="hidden md:block fixed top-0 left-0 right-0 z-50">
+        <div
+          className={`mx-auto transition-all duration-700 ease-out ${
+            scrolled
+              ? 'max-w-7xl mt-4 px-4'
+              : 'max-w-[90rem] mt-0 px-6'
+          }`}
+        >
+          <div
+            className={`transition-all duration-700 ease-out ${
+              scrolled
+                ? 'bg-white/80 backdrop-blur-xl border border-slate-200/50 shadow-lg shadow-black/[0.03] rounded-full px-6'
+                : 'bg-transparent border border-transparent rounded-full px-6'
+            }`}
+          >
+            <div
+              className={`flex items-center justify-between transition-all duration-700 ease-out ${
+                scrolled ? 'h-14' : 'h-20'
+              }`}
+            >
+              {/* Logo */}
+              <Link
+                to="/"
+                className={`font-semibold tracking-[-0.02em] transition-all duration-700 ease-out hover:text-emerald-600 text-slate-900 flex-shrink-0 ${
+                  scrolled ? 'text-lg' : 'text-[22px]'
+                }`}
+              >
+                DataStory
+              </Link>
+
+              {/* Center Nav Items */}
+              <div
+                className={`flex items-center transition-all duration-700 ease-out ${
+                  scrolled ? 'gap-6' : 'gap-10'
+                }`}
+              >
+                {navLinks.map((link) => (
+                  'to' in link ? (
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      className={`text-[15px] font-medium transition-colors duration-200 ${
+                        location.pathname === link.to
+                          ? 'text-emerald-600'
+                          : 'text-slate-500 hover:text-slate-900'
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      className="text-[15px] font-medium text-slate-500 hover:text-slate-900 transition-colors duration-200"
+                    >
+                      {link.label}
+                    </a>
+                  )
+                ))}
+              </div>
+
+              {/* Right Side - Apply CTA */}
+              <div className="flex items-center flex-shrink-0">
+                <Link
+                  to="/apply"
+                  className={`font-semibold rounded-full transition-all duration-700 ease-out bg-emerald-600 text-white hover:bg-emerald-700 ${
+                    scrolled
+                      ? 'text-[13px] px-5 py-2'
+                      : 'text-[14px] px-6 py-2.5 shadow-lg shadow-emerald-600/25'
+                  }`}
+                >
+                  Apply
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Navbar */}
+      <nav className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-100">
+        <div className="px-6">
+          <div className="flex items-center justify-between h-16">
             <Link
               to="/"
-              className="text-[22px] font-semibold tracking-[-0.02em] text-slate-900 hover:text-emerald-600 transition-colors"
+              className="text-lg font-semibold tracking-[-0.02em] text-slate-900"
             >
               DataStory
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-10">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2"
+              aria-label="Toggle menu"
+            >
+              <div className="w-5 h-4 flex flex-col justify-between">
+                <span className={`h-0.5 w-full bg-slate-900 transition-all origin-center ${mobileMenuOpen ? 'rotate-45 translate-y-[7px]' : ''}`} />
+                <span className={`h-0.5 w-full bg-slate-900 transition-opacity ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+                <span className={`h-0.5 w-full bg-slate-900 transition-all origin-center ${mobileMenuOpen ? '-rotate-45 -translate-y-[7px]' : ''}`} />
+              </div>
+            </button>
+          </div>
+
+          {/* Mobile Menu */}
+          <div
+            className={`overflow-hidden transition-all duration-300 border-t border-slate-100 ${
+              mobileMenuOpen ? 'max-h-80 py-6' : 'max-h-0'
+            }`}
+          >
+            <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
                 'to' in link ? (
                   <Link
                     key={link.to}
                     to={link.to}
-                    className={`text-[15px] font-medium transition-colors ${
+                    className={`text-base font-medium ${
                       location.pathname === link.to
                         ? 'text-emerald-600'
-                        : 'text-slate-600 hover:text-slate-900'
+                        : 'text-slate-600'
                     }`}
                   >
                     {link.label}
@@ -63,60 +155,22 @@ export default function Layout() {
                   <a
                     key={link.href}
                     href={link.href}
-                    className="text-[15px] font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                    className="text-base font-medium text-slate-600"
                   >
                     {link.label}
                   </a>
                 )
               ))}
+              <Link
+                to="/apply"
+                className="mt-2 px-6 py-3 bg-emerald-600 text-white font-semibold rounded-full text-center hover:bg-emerald-700 transition-colors"
+              >
+                Apply
+              </Link>
             </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 -mr-2"
-              aria-label="Toggle menu"
-            >
-              <div className="w-6 h-5 flex flex-col justify-between">
-                <span className={`h-0.5 w-full bg-slate-900 transition-all origin-center ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-                <span className={`h-0.5 w-full bg-slate-900 transition-opacity ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-                <span className={`h-0.5 w-full bg-slate-900 transition-all origin-center ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-              </div>
-            </button>
-          </div>
-        </nav>
-
-        {/* Mobile Menu */}
-        <div
-          className={`md:hidden bg-white border-t border-slate-100 overflow-hidden transition-all duration-300 ${
-            mobileMenuOpen ? 'max-h-64' : 'max-h-0'
-          }`}
-        >
-          <div className="px-6 py-6 space-y-4">
-            {navLinks.map((link) => (
-              'to' in link ? (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className={`block text-lg font-medium ${
-                    location.pathname === link.to ? 'text-emerald-600' : 'text-slate-900'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ) : (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="block text-lg font-medium text-slate-900"
-                >
-                  {link.label}
-                </a>
-              )
-            ))}
           </div>
         </div>
-      </header>
+      </nav>
 
       {/* Main Content */}
       <main>
