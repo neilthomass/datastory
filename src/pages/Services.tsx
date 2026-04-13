@@ -127,7 +127,7 @@ export default function Services() {
   return (
     <div ref={sectionsRef}>
       {/* Hero Section */}
-      <section ref={heroRef} className="relative pt-32 pb-20 min-h-[47vh] flex items-center overflow-hidden" style={{ isolation: 'isolate' }}>
+      <section ref={heroRef} className="relative pt-32 pb-20 min-h-[60vh] flex items-center overflow-hidden" style={{ isolation: 'isolate' }}>
         <DelicateAsciiDots />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12 w-full">
           <div className="max-w-3xl">

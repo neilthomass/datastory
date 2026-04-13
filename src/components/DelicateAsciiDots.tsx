@@ -170,9 +170,13 @@ const DelicateAsciiDots: React.FC = () => {
     let time = 0
 
     const handleResize = () => {
+      const container = containerRef.current
+      if (!container) return
+
+      const rect = container.getBoundingClientRect()
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      canvas.width = window.innerWidth * dpr
-      canvas.height = window.innerHeight * dpr
+      canvas.width = rect.width * dpr
+      canvas.height = rect.height * dpr
       gl.viewport(0, 0, canvas.width, canvas.height)
 
       // Calculate grid rows to maintain square cells

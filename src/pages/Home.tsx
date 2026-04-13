@@ -32,12 +32,47 @@ const pillars = [
   },
 ]
 
+// Companies with logos available
+const companiesWithLogos: Record<string, string> = {
+  'Amazon': '/logos/amazon.svg',
+  'McKinsey & Company': '/logos/mckinsey.svg',
+  'Adobe': '/logos/adobe.svg',
+  'Microsoft': '/logos/microsoft.svg',
+  'BlackRock': '/logos/blackrock.svg',
+  'Intel': '/logos/intel.svg',
+  'Tesla': '/logos/tesla.svg',
+  'Meta': '/logos/meta.svg',
+  'BCG': '/logos/bcg.svg',
+  'Salesforce': '/logos/salesforce.svg',
+  'PwC': '/logos/pwc.svg',
+  'Workday': '/logos/workday.svg',
+  'Atlassian': '/logos/atlassian.svg',
+  'Coinbase': '/logos/coinbase.svg',
+  'Figma': '/logos/figma.svg',
+  'SpaceX': '/logos/spacex.svg',
+  'Capital One': '/logos/capital-one.svg',
+  'Bain & Company': '/logos/bain.svg',
+  'SIG': '/logos/sig.webp',
+  'Walmart': '/logos/walmart.svg',
+  'Visa': '/logos/visa.svg',
+  'Scale': '/logos/scale.svg',
+  'Disney': '/logos/disney.svg',
+  'Coke': '/logos/coke.svg',
+  'Datadog': '/logos/datadog.svg',
+  'EY': '/logos/ey.svg',
+  'Apple': '/logos/apple.svg',
+  'Databricks': '/logos/databricks.svg',
+  'OpenAI': '/logos/openai.svg',
+  'CrowdStrike': '/logos/crowdstrike.svg',
+}
+
 const alumniCompanies = [
-  'Amazon', 'McKinsey & Company', 'Adobe', 'Walmart', 'Microsoft', 'BlackRock',
-  'Intel', 'Tesla', 'Meta', 'BCG', 'Coca-Cola', 'AT&T', 'Salesforce', 'PwC',
-  'Workday', 'Disney', 'Thermo Fisher Scientific', 'Scale AI', 'EY', 'Red Bull',
-  'Datadog', 'Visa', 'Rakuten', 'Atlassian', 'CrowdStrike', 'Coinbase',
-  'Jefferies', 'Chime', 'Accenture', 'Figma', 'Susquehanna International Group', 'SpaceX'
+  'Amazon', 'McKinsey & Company', 'Adobe', 'Microsoft', 'BlackRock',
+  'Figma', 'Meta', 'Tesla', 'BCG', 'Salesforce', 'SIG',
+  'Workday', 'Atlassian', 'Coinbase',
+  'Intel', 'SpaceX', 'Capital One', 'Bain & Company', 'PwC',
+  'Walmart', 'Visa', 'Scale', 'Disney', 'Coke', 'Datadog', 'Databricks', 'Apple',
+  'EY', 'OpenAI', 'CrowdStrike'
 ]
 
 export default function Home() {
@@ -245,61 +280,73 @@ export default function Home() {
         </div>
 
         {/* Two-row marquee */}
-        <div className="relative space-y-4">
+        <div className="relative space-y-12">
           {/* Gradient masks */}
           <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
           {/* Row 1 - scrolling left */}
-          <div className="flex animate-scroll-left">
-            {[...alumniCompanies.slice(0, 16), ...alumniCompanies.slice(0, 16)].map((company, index) => (
+          <div className="flex animate-marquee-left items-center w-max">
+            {[...alumniCompanies, ...alumniCompanies].map((company, index) => (
               <div
                 key={`row1-${company}-${index}`}
-                className="flex-shrink-0 mx-2"
+                className="flex-shrink-0 mx-8"
               >
-                <div className="px-5 py-3 bg-slate-50 rounded-full flex items-center justify-center">
+                {companiesWithLogos[company] ? (
+                  <img
+                    src={companiesWithLogos[company]}
+                    alt={company}
+                    className="h-7 w-auto object-contain"
+                  />
+                ) : (
                   <span className="text-sm font-medium text-slate-600 whitespace-nowrap">
                     {company}
                   </span>
-                </div>
+                )}
               </div>
             ))}
           </div>
 
           {/* Row 2 - scrolling right */}
-          <div className="flex animate-scroll-right">
-            {[...alumniCompanies.slice(16), ...alumniCompanies.slice(16)].map((company, index) => (
+          <div className="flex animate-marquee-right items-center w-max">
+            {[...[...alumniCompanies].reverse(), ...[...alumniCompanies].reverse()].map((company, index) => (
               <div
                 key={`row2-${company}-${index}`}
-                className="flex-shrink-0 mx-2"
+                className="flex-shrink-0 mx-8"
               >
-                <div className="px-5 py-3 bg-slate-50 rounded-full flex items-center justify-center">
+                {companiesWithLogos[company] ? (
+                  <img
+                    src={companiesWithLogos[company]}
+                    alt={company}
+                    className="h-7 w-auto object-contain"
+                  />
+                ) : (
                   <span className="text-sm font-medium text-slate-600 whitespace-nowrap">
                     {company}
                   </span>
-                </div>
+                )}
               </div>
             ))}
           </div>
         </div>
 
         <style>{`
-          @keyframes scroll-left {
+          @keyframes marquee-left {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
           }
-          @keyframes scroll-right {
+          @keyframes marquee-right {
             0% { transform: translateX(-50%); }
             100% { transform: translateX(0); }
           }
-          .animate-scroll-left {
-            animation: scroll-left 25s linear infinite;
+          .animate-marquee-left {
+            animation: marquee-left 40s linear infinite;
           }
-          .animate-scroll-right {
-            animation: scroll-right 30s linear infinite;
+          .animate-marquee-right {
+            animation: marquee-right 40s linear infinite;
           }
-          .animate-scroll-left:hover,
-          .animate-scroll-right:hover {
+          .animate-marquee-left:hover,
+          .animate-marquee-right:hover {
             animation-play-state: paused;
           }
         `}</style>
