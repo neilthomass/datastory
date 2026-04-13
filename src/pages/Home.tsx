@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronRight, ExternalLink } from 'lucide-react'
 import SlidingEaseVerticalBars from '@/components/SlidingEaseVerticalBars'
+import ScrollScaleSection from '@/components/ScrollScaleSection'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -149,94 +150,96 @@ export default function Home() {
       </section>
 
 
-      {/* Interactive Pillars Section */}
-      <section className="py-32">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="animate-on-scroll text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-slate-900">
-              More Than Consulting
-            </h2>
-            <p className="mt-4 text-xl text-slate-600">
-              We prioritize helping our members create unforgettable memories throughout their undergraduate experience.
-            </p>
-          </div>
-
-          {/* Pillar Tabs */}
-          <div className="animate-on-scroll flex justify-center mb-12">
-            <div className="inline-flex bg-slate-100 rounded-full p-1">
-              {pillars.map((pillar) => (
-                <button
-                  key={pillar.id}
-                  onClick={() => setActivePillar(pillar.id)}
-                  className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
-                    activePillar === pillar.id
-                      ? 'bg-slate-900 text-white shadow-lg'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  {pillar.title}
-                </button>
-              ))}
+      {/* Interactive Pillars Section - with scroll scale effect */}
+      <ScrollScaleSection bgColor="bg-emerald-950" className="text-white">
+        <section className="py-32">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <div className="animate-on-scroll text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white">
+                More Than Consulting
+              </h2>
+              <p className="mt-4 text-xl text-emerald-100/80">
+                We prioritize helping our members create unforgettable memories throughout their undergraduate experience.
+              </p>
             </div>
-          </div>
 
-          {/* Pillar Content */}
-          <div className="animate-on-scroll grid lg:grid-cols-2 gap-12 items-center">
-            <div className="relative min-h-[280px]">
-              {pillars.map((pillar) => (
-                <div
-                  key={pillar.id}
-                  className={`transition-all duration-500 ease-out ${
-                    activePillar === pillar.id
-                      ? 'opacity-100 translate-y-0 relative'
-                      : 'opacity-0 translate-y-4 absolute inset-0 pointer-events-none'
-                  }`}
-                >
-                  <div className="text-sm font-semibold text-emerald-600 uppercase tracking-wider mb-2">
-                    {pillar.subtitle}
-                  </div>
-                  <h3 className="text-4xl font-semibold text-slate-900 mb-6">
-                    {pillar.title}
-                  </h3>
-                  <p className="text-xl text-slate-600 leading-relaxed mb-8">
-                    {pillar.description}
-                  </p>
-                  <Link
-                    to="/services"
-                    className="group inline-flex items-center gap-2 text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
+            {/* Pillar Tabs */}
+            <div className="animate-on-scroll flex justify-center mb-12">
+              <div className="inline-flex bg-white/10 backdrop-blur-sm rounded-full p-1">
+                {pillars.map((pillar) => (
+                  <button
+                    key={pillar.id}
+                    onClick={() => setActivePillar(pillar.id)}
+                    className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                      activePillar === pillar.id
+                        ? 'bg-white text-emerald-950 shadow-lg'
+                        : 'text-white/80 hover:text-white'
+                    }`}
                   >
-                    Learn more about {pillar.title.toLowerCase()}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              ))}
+                    {pillar.title}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <div className="relative rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
-              {pillars.map((pillar) => (
-                <img
-                  key={pillar.id}
-                  src={pillar.image}
-                  alt={`DataStory ${pillar.title.toLowerCase()}`}
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-out ${
-                    activePillar === pillar.id ? 'opacity-100' : 'opacity-0'
-                  }`}
-                />
-              ))}
+            {/* Pillar Content */}
+            <div className="animate-on-scroll grid lg:grid-cols-2 gap-12 items-center">
+              <div className="relative min-h-[280px]">
+                {pillars.map((pillar) => (
+                  <div
+                    key={pillar.id}
+                    className={`transition-all duration-500 ease-out ${
+                      activePillar === pillar.id
+                        ? 'opacity-100 translate-y-0 relative'
+                        : 'opacity-0 translate-y-4 absolute inset-0 pointer-events-none'
+                    }`}
+                  >
+                    <div className="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-2">
+                      {pillar.subtitle}
+                    </div>
+                    <h3 className="text-4xl font-semibold text-white mb-6">
+                      {pillar.title}
+                    </h3>
+                    <p className="text-xl text-emerald-100/80 leading-relaxed mb-8">
+                      {pillar.description}
+                    </p>
+                    <Link
+                      to="/services"
+                      className="group inline-flex items-center gap-2 text-emerald-400 font-medium hover:text-emerald-300 transition-colors"
+                    >
+                      Learn more about {pillar.title.toLowerCase()}
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
+                ))}
+              </div>
+
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
+                {pillars.map((pillar) => (
+                  <img
+                    key={pillar.id}
+                    src={pillar.image}
+                    alt={`DataStory ${pillar.title.toLowerCase()}`}
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-out ${
+                      activePillar === pillar.id ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollScaleSection>
 
-      {/* Alumni Companies Marquee */}
-      <section className="py-24 bg-slate-50 overflow-hidden">
+      {/* Alumni Companies Marquee - no background to avoid horizontal line effect */}
+      <section className="py-32 overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 mb-16">
           <div className="animate-on-scroll text-center">
             <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-slate-900">
               Where our alumni work
             </h2>
-            <p className="mt-4 text-xl text-slate-600">
-              Our members go on to the world's top companies.
+            <p className="mt-6 text-xl text-slate-600 max-w-2xl mx-auto">
+              Our members go on to build careers at the world's leading companies.
             </p>
           </div>
         </div>
@@ -244,18 +247,18 @@ export default function Home() {
         {/* Two-row marquee */}
         <div className="relative space-y-4">
           {/* Gradient masks */}
-          <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
           {/* Row 1 - scrolling left */}
           <div className="flex animate-scroll-left">
             {[...alumniCompanies.slice(0, 16), ...alumniCompanies.slice(0, 16)].map((company, index) => (
               <div
                 key={`row1-${company}-${index}`}
-                className="flex-shrink-0 mx-3"
+                className="flex-shrink-0 mx-2"
               >
-                <div className="px-6 py-4 bg-white rounded-lg border border-slate-200 shadow-sm flex items-center justify-center min-w-[120px]">
-                  <span className="text-sm font-semibold text-slate-700 whitespace-nowrap">
+                <div className="px-5 py-3 bg-slate-50 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-medium text-slate-600 whitespace-nowrap">
                     {company}
                   </span>
                 </div>
@@ -268,10 +271,10 @@ export default function Home() {
             {[...alumniCompanies.slice(16), ...alumniCompanies.slice(16)].map((company, index) => (
               <div
                 key={`row2-${company}-${index}`}
-                className="flex-shrink-0 mx-3"
+                className="flex-shrink-0 mx-2"
               >
-                <div className="px-6 py-4 bg-white rounded-lg border border-slate-200 shadow-sm flex items-center justify-center min-w-[120px]">
-                  <span className="text-sm font-semibold text-slate-700 whitespace-nowrap">
+                <div className="px-5 py-3 bg-slate-50 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-medium text-slate-600 whitespace-nowrap">
                     {company}
                   </span>
                 </div>

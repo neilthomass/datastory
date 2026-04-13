@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import DelicateAsciiDots from '@/components/DelicateAsciiDots'
 import TiltCard from '@/components/TiltCard'
+import ScrollScaleSection from '@/components/ScrollScaleSection'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -140,36 +141,38 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Berkeley's Brightest */}
-      <section className="py-24 bg-slate-50">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="animate-section grid lg:grid-cols-2 gap-16 items-center">
-            <div className="rounded-2xl overflow-hidden shadow-xl">
-              <img
-                src="/images/dstory-123.webp"
-                alt="DataStory team members"
-                className="w-full h-auto object-cover"
-              />
-            </div>
-            <div>
-              <span className="text-emerald-600 font-semibold uppercase tracking-wider text-sm">Our Team</span>
-              <h2 className="mt-4 text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-slate-900">
-                Berkeley's Brightest
-              </h2>
-              <p className="mt-6 text-xl text-slate-600 leading-relaxed">
-                DataStory is comprised of consultants selected from among the top students at UC Berkeley through a rigorous recruitment process. Each consultant participates in regular training sessions to ensure that only the highest quality of work is delivered to our clients.
-              </p>
-              <p className="mt-4 text-lg text-slate-500 leading-relaxed">
-                Our consultants are adept at breaking down and critically analyzing the most challenging data problems. As a result, DataStory alumni have consistently gone on to work at top-tier firms.
-              </p>
+      {/* Berkeley's Brightest - with scroll scale effect */}
+      <ScrollScaleSection bgColor="bg-emerald-950" className="text-white">
+        <section className="py-24">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <div className="animate-section grid lg:grid-cols-2 gap-16 items-center">
+              <div className="rounded-2xl overflow-hidden shadow-2xl">
+                <img
+                  src="/images/dstory-123.webp"
+                  alt="DataStory team members"
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+              <div>
+                <span className="text-emerald-300 font-semibold uppercase tracking-wider text-sm">Our Team</span>
+                <h2 className="mt-4 text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white">
+                  Berkeley's Brightest
+                </h2>
+                <p className="mt-6 text-xl text-slate-300 leading-relaxed">
+                  DataStory is comprised of consultants selected from among the top students at UC Berkeley through a rigorous recruitment process. Each consultant participates in regular training sessions to ensure that only the highest quality of work is delivered to our clients.
+                </p>
+                <p className="mt-4 text-lg text-slate-400 leading-relaxed">
+                  Our consultants are adept at breaking down and critically analyzing the most challenging data problems. As a result, DataStory alumni have consistently gone on to work at top-tier firms.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollScaleSection>
 
 
       {/* Project Structure */}
-      <section className="py-24">
+      <section className="py-32">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="animate-section grid lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -187,7 +190,7 @@ export default function Services() {
 
             {/* Visual representation */}
             <div className="space-y-4">
-              <TiltCard className="flex items-center gap-6 p-6 bg-slate-50 rounded-2xl">
+              <TiltCard className="flex items-center gap-6 p-6 border border-slate-200 rounded-2xl hover:border-emerald-200 transition-colors">
                 <div className="flex-shrink-0 w-16 text-center">
                   <span className="text-3xl font-bold text-emerald-600">01</span>
                 </div>
@@ -198,7 +201,7 @@ export default function Services() {
                 <div className="ml-auto text-slate-400 text-sm">Weeks 1-4</div>
               </TiltCard>
 
-              <TiltCard className="flex items-center gap-6 p-6 bg-slate-50 rounded-2xl">
+              <TiltCard className="flex items-center gap-6 p-6 border border-slate-200 rounded-2xl hover:border-emerald-200 transition-colors">
                 <div className="flex-shrink-0 w-16 text-center">
                   <span className="text-3xl font-bold text-emerald-600">02</span>
                 </div>
@@ -209,7 +212,7 @@ export default function Services() {
                 <div className="ml-auto text-slate-400 text-sm">Weeks 5-10</div>
               </TiltCard>
 
-              <TiltCard className="flex items-center gap-6 p-6 bg-slate-50 rounded-2xl">
+              <TiltCard className="flex items-center gap-6 p-6 border border-slate-200 rounded-2xl hover:border-emerald-200 transition-colors">
                 <div className="flex-shrink-0 w-16 text-center">
                   <span className="text-3xl font-bold text-emerald-600">03</span>
                 </div>
@@ -224,63 +227,63 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="py-20 bg-slate-50">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="animate-section text-center mb-16">
-            <span className="text-emerald-600 font-semibold uppercase tracking-wider text-sm">What We Offer</span>
-            <h2 className="mt-4 text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-slate-900">
-              Our Services
-            </h2>
-          </div>
-          <div className="animate-card-group grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => (
-              <TiltCard
-                key={service.title}
-                className="animate-card bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-shadow"
-              >
-                <div className="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center mb-6 text-emerald-600">
-                  {service.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                  {service.title}
+      {/* Services Grid - with scroll scale effect */}
+      <ScrollScaleSection bgColor="bg-emerald-950" className="text-white">
+        <section className="py-24">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <div className="animate-section text-center mb-16">
+              <span className="text-emerald-400 font-semibold uppercase tracking-wider text-sm">What We Offer</span>
+              <h2 className="mt-4 text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white">
+                Our Services
+              </h2>
+            </div>
+            <div className="animate-card-group grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {services.map((service) => (
+                <TiltCard
+                  key={service.title}
+                  className="animate-card bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-colors"
+                >
+                  <div className="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center mb-6 text-emerald-400">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    {service.title}
+                  </h3>
+                  <p className="text-slate-300 leading-relaxed">
+                    {service.description}
+                  </p>
+                </TiltCard>
+              ))}
+            </div>
+
+            {/* Clients integrated into same section */}
+            <div className="animate-section mt-20 pt-16 border-t border-white/10">
+              <div className="text-center mb-10">
+                <h3 className="text-2xl md:text-3xl font-semibold tracking-[-0.02em] text-white">
+                  Our Clients
                 </h3>
-                <p className="text-slate-600 leading-relaxed">
-                  {service.description}
+                <p className="mt-3 text-lg text-slate-400">
+                  Organizations we've partnered with to deliver meaningful results.
                 </p>
-              </TiltCard>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Past Clients */}
-      <section className="py-20 bg-slate-50">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="animate-section text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-[-0.02em] text-slate-900">
-              Our Clients
-            </h2>
-            <p className="mt-4 text-lg text-slate-600">
-              Organizations we've partnered with to deliver meaningful results.
-            </p>
-          </div>
-
-          <div className="animate-card-group flex flex-wrap justify-center gap-4">
-            {clients.map((client) => (
-              <div
-                key={client}
-                className="animate-card px-6 py-3 bg-slate-100 rounded-full text-slate-700 font-medium"
-              >
-                {client}
               </div>
-            ))}
+
+              <div className="animate-card-group flex flex-wrap justify-center gap-3">
+                {clients.map((client) => (
+                  <div
+                    key={client}
+                    className="animate-card px-5 py-2.5 bg-white/10 rounded-full text-white/80 font-medium text-sm hover:bg-white/20 transition-colors"
+                  >
+                    {client}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollScaleSection>
 
       {/* Past Projects */}
-      <section className="py-24">
+      <section className="py-32">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="animate-section text-center mb-16">
             <span className="text-emerald-600 font-semibold uppercase tracking-wider text-sm">Sample Work</span>
@@ -288,38 +291,38 @@ export default function Services() {
               Past Projects
             </h2>
           </div>
-          <div className="animate-card-group grid md:grid-cols-3 gap-8">
-            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
+          <div className="animate-card-group grid md:grid-cols-3 gap-6">
+            <TiltCard className="animate-card border border-slate-200 p-8 rounded-2xl hover:border-emerald-200 transition-colors">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">UNICEF</h3>
               <p className="text-slate-600 leading-relaxed">
                 Created web scrapers to identify potential partner organizations for UNICEF by utilizing sentiment analysis on social media posts to target organizations with a higher propensity to join.
               </p>
             </TiltCard>
-            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
+            <TiltCard className="animate-card border border-slate-200 p-8 rounded-2xl hover:border-emerald-200 transition-colors">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">EA Games</h3>
               <p className="text-slate-600 leading-relaxed">
                 Developed a web scraper to capture game leak data, integrating it with an ETL pipeline into Snowflake. Enhanced classification accuracy using confusion matrices and initiated predictive analytics on sentiment and revenue trends.
               </p>
             </TiltCard>
-            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
+            <TiltCard className="animate-card border border-slate-200 p-8 rounded-2xl hover:border-emerald-200 transition-colors">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">Seagate</h3>
               <p className="text-slate-600 leading-relaxed">
                 Developed a PostgreSQL-integrated priority scoring framework for automating accounts payable and cost modeling. Built Tableau dashboards with drill-down analytics and streamlined ETL workflows using Metabase and Streamlit.
               </p>
             </TiltCard>
-            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
+            <TiltCard className="animate-card border border-slate-200 p-8 rounded-2xl hover:border-emerald-200 transition-colors">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">EPRI</h3>
               <p className="text-slate-600 leading-relaxed">
                 Built generative machine learning models including LSTM, GANs, and VAEs to synthesize ultrasonic A-scans for non-destructive testing.
               </p>
             </TiltCard>
-            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
+            <TiltCard className="animate-card border border-slate-200 p-8 rounded-2xl hover:border-emerald-200 transition-colors">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">The Education Trust</h3>
               <p className="text-slate-600 leading-relaxed">
                 Constructed an ETL Snowflake pipeline to automate collection and data. Generated multiple Tableau visualizations using piped data.
               </p>
             </TiltCard>
-            <TiltCard className="animate-card bg-slate-50 p-8 rounded-2xl">
+            <TiltCard className="animate-card border border-slate-200 p-8 rounded-2xl hover:border-emerald-200 transition-colors">
               <h3 className="text-xl font-semibold text-slate-900 mb-3">The Farmlink Project</h3>
               <p className="text-slate-600 leading-relaxed">
                 Conducted an ML-driven data analysis to segment donors. Identified key factors to increase donations from newsletters.
