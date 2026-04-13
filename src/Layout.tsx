@@ -123,8 +123,7 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      {/* Footer - hidden on team page */}
-      {location.pathname !== '/team' && (
+      {/* Footer */}
       <footer className="bg-slate-50 border-t border-slate-200">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
@@ -140,7 +139,7 @@ export default function Layout() {
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-4">Navigate</h4>
               <ul className="space-y-3">
-                {navLinks.map((link) => (
+                {navLinks.filter(link => link.label !== 'Contact').map((link) => (
                   <li key={'to' in link ? link.to : link.href}>
                     {'to' in link ? (
                       <Link to={link.to} className="text-sm text-slate-600 hover:text-emerald-600 transition-colors">
@@ -192,7 +191,6 @@ export default function Layout() {
 
         </div>
       </footer>
-      )}
     </div>
   )
 }
