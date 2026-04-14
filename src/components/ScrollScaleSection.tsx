@@ -78,7 +78,7 @@ export default function ScrollScaleSection({
     <div ref={containerRef} className="relative">
       <div
         ref={innerRef}
-        className={`${bgColor} ${className} overflow-hidden transition-shadow duration-300`}
+        className={`${bgColor} ${className} transition-shadow duration-300`}
         style={{ maxWidth: '90%', borderRadius: '24px', margin: '0 auto' }}
       >
         {children}
