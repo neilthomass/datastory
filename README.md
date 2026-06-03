@@ -1,6 +1,6 @@
 # DataStory Website
 
-Website for DataStory, UC Berkeley's student-led data consulting club.
+Custom website redesign for DataStory, UC Berkeley's student-led data consulting club. Seemless UI with physics based + GPU accelerated animations. Created for DataStory senior advisor presentation.
 
 ## Tech Stack
 
@@ -13,27 +13,6 @@ Website for DataStory, UC Berkeley's student-led data consulting club.
 ## Development
 
 ```bash
-npm install
+npm i
 npm run dev
-```
-
-## Build
-
-```bash
-npm run build
-npm run preview
-```
-
-## Structure
-
-```
-src/
-├── components/    # UI components
-├── pages/         # Route pages
-├── Layout.tsx     # Nav + footer
-└── main.tsx       # Entry point
-
-public/
-├── images/        # WebP images
-└── logos/         # SVG logos
 ```
